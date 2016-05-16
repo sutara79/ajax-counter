@@ -4,8 +4,8 @@ define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 /**********************************************************************
  * 設定
  **********************************************************************/
-define('COUNT_FILE', DOCUMENT_ROOT . '/ajax-counter/dat/count.dat'); // アクセス数
-define('LOG_FILE', DOCUMENT_ROOT . '/ajax-counter/dat/log.dat'); // ログ
+define('COUNT_FILE', 'dat/count.dat'); // アクセス数
+define('LOG_FILE', 'dat/log.dat'); // ログ
 
 /**********************************************************************
  * カウント処理を行い，アクセス数を json 形式で出力する関数．
