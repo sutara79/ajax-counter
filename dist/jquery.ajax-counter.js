@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
   jQuery.ajax({
-    url: 'vendor/ajax-counter/counter.php', // counter.php への絶対パス．
+    url: 'jquery.ajax-counter.php', // counter.php への絶対パス．
     cache: false,
     dataType: 'json',
     success: function(res) {

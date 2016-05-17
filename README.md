@@ -1,6 +1,14 @@
-# ajax-counter
-Ajax によるシンプルなアクセスカウンタです．  
-Javascript(jQuery) + PHP で実装されています．
+# jquery.ajax-counter
+jQuery plugin for generating a simple hit-counter using jQuery + PHP.
+
+- - -
+## Forked from
+- [shun91/ajax-counter](//github.com/shun91/ajax-counter)
+
+上記のプロジェクトをフォークし、独自に編集しました。
+
+- - -
+
 
 ## 機能
 - Webページのアクセス数をカウントできます．
