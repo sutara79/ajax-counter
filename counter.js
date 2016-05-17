@@ -6,7 +6,7 @@ jQuery(document).ready(function() {
     success: function(res) {
       // アクセス数の出力フォーマットは append() 内で定義している．
       // jQuery(".counter").append('累計&ensp;'+res.total+'&ensp;今日&ensp;'+res.today+'&ensp;昨日&ensp;'+res.yesterday);
-      jQuery(".counter").append('あなたは <strong>' + res.total + '</strong>番目の訪問者です');
+      jQuery(".counter-total").append(res.total);
     }
   });
 });
