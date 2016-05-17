@@ -45,9 +45,9 @@ $.extend(AjaxCounter.prototype, /** @lends AjaxCounter.prototype */ {
    */
   setOption: function() {
     this.option =  $.extend({
-      total: "count-total",
-      today: "count-today",
-      yesterday: "count-yesterday"
+      total: ".count-total",
+      today: ".count-today",
+      yesterday: ".count-yesterday"
     }, this.option);
   },
 
