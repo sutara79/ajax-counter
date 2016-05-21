@@ -12,14 +12,16 @@
  * @desc プラグインをjQueryのプロトタイプに追加する
  * @global
  * @memberof jQuery
+ * @param {string} [dist_dir] - distフォルダへのパス
  * @param {Object} [option] オプションを格納した連想配列
+ * @param {string} [option.dat_dir='dat/'] - datフォルダへのパス(相対パスの場合は、PHPファイルを基準とする)
  * @param {string} [option.total='.count-total'] - 総計を挿入するHTML要素のセレクタ
  * @param {string} [option.today='.count-today'] - 今日の訪問者数を挿入するHTML要素のセレクタ
  * @param {string} [option.yesterday='.count-yesterday'] - 昨日の訪問者数を挿入するHTML要素のセレクタ
  */
-$.fn.ajaxCounter = function (option) {
+$.fn.ajaxCounter = function (dist_dir, option) {
   return this.each(function () {
-    new AjaxCounter(this, option);
+    new AjaxCounter(this, dist_dir, option);
   });
 };
 
@@ -27,14 +29,15 @@ $.fn.ajaxCounter = function (option) {
  * @global
  * @constructor
  * @classdesc 要素ごとに適用される処理を集めたクラス
- * @param {Object} elem - プラグインを適用するHTML要素
- * @param {Object} option - オプションを格納した連想配列
+ * @param {Object} [elem] - プラグインを適用するHTML要素
+ * @param {string} [dist_dir] - distフォルダへのパス
+ * @param {Object} [option] - オプションを格納した連想配列
  */
-function AjaxCounter (elem, option) {
+function AjaxCounter (elem, dist_dir, option) {
   this.elem = elem;
   this.option = option;
 
-  this.setOption();
+  this.setOption(dist_dir);
   this.getCount();
 }
 
@@ -42,12 +45,15 @@ $.extend(AjaxCounter.prototype, /** @lends AjaxCounter.prototype */ {
   /**
    * @private
    * @desc オプションの初期化
+   * @param {string} [dist_dir] - distフォルダへのパス
    */
-  setOption: function() {
+  setOption: function (dist_dir) {
     this.option =  $.extend({
+      dist_dir: dist_dir,
+      dat_dir: "dat/",
       total: ".count-total",
       today: ".count-today",
-      yesterday: ".count-yesterday"
+      yesterday: ".count-yesterday",
     }, this.option);
   },
 
@@ -58,13 +64,13 @@ $.extend(AjaxCounter.prototype, /** @lends AjaxCounter.prototype */ {
   getCount: function () {
     var self = this;
     $.ajax({
-      url: 'jquery.ajax-counter.php',
-      cache: false,
-      dataType: 'json',
-      success: function(res) {
-        $(self.elem).filter(self.option.total).text(res.total);
-        $(self.elem).filter(self.option.today).text(res.today);
-        $(self.elem).filter(self.option.yesterday).text(res.yesterday);
+      url: self.option.dist_dir + "jquery.ajax-counter.php",
+      data: {dat_dir: self.option.dat_dir},
+      dataType: "json",
+      success: function (res) {
+        $(self.elem).find(self.option.total).text(res.total);
+        $(self.elem).find(self.option.today).text(res.today);
+        $(self.elem).find(self.option.yesterday).text(res.yesterday);
       }
     });
   }
