@@ -1,135 +1,86 @@
 # jquery.ajax-counter
 jQuery plugin for generating a simple hit-counter using jQuery + PHP.
 
-- - -
+- Webページのアクセス数をカウントできます。
+- クッキーによって、24時間以内の同一のブラウザからのアクセスはカウントしません。
+- 累計、今日、昨日のアクセス数を表示することができます。
+- 過去の日計アクセス数の保存機能があります。
+- Ajax を利用しているので、ページがキャッシュされていてもちゃんとカウントしてくれます。
+
 ## Forked from
 - [shun91/ajax-counter](//github.com/shun91/ajax-counter)
 
-上記のプロジェクトをフォークし、独自に編集しました。
+上記のプロジェクトをフォークし、独自に編集しました。  
+変更点は下記のとおりです。
 
-- - -
+- ページ更新による連続カウントをクッキーによって防ぐようにした。
+- jQueryプラグインとして記述を整えた。
+- HTMLから呼び出す際にオプションを渡せるようにした。
+- PHPの処理をクラス化した。
 
+## Demo
+http://usamimi.info/~sutara/sample2/ajax-counter/
 
-## 機能
-- Webページのアクセス数をカウントできます．
-- 「PV数」をカウントします．「同一IPはカウントしない」等の機能はありません．
-- 累計，今日，昨日のアクセス数を表示することができます．
-- 過去の日計アクセス数の保存機能があります．
-- Ajax を利用しているので，ページがキャッシュされていてもちゃんとカウントしてくれます．
-- カウントしたいページにHTMLタグを数行埋め込むだけで動作します．
+## Usage
+###### Set file permission
+- `dat/` (707 or 777)
+    - `count.dat` (606 or 666)
+    - `log.dat` (606 or 666)
 
-## ファイル構成
-```
-ajax-counter/
-- counter.js     # カウンタ本体のAjaxです(JS)
-- counter.php    # カウンタ本体のAPIです(PHP)
-- README.md      # 説明書
-- dat/           # アクセス数保存ディレクトリ
-  - count.dat    # 累計, 今日, 昨日のアクセス数
-  - log.dat      # 過去の日計アクセス数
-```
-
-## 使い方
-
-### ファイルのDL
-このリポジトリをクローン or DL します．
-
-### ファイルの書き換え
-`counter.js` の3行目の `url` を適切な絶対パスに変更します．
-```javascript
-url: '/ajax-counter/counter.php', // counter.php への絶対パス．
-```
-
-`counter.php` の7, 8行目のログファイルの保存場所を適切な絶対パスに変更します．
-```php
-define('COUNT_FILE', DOCUMENT_ROOT . '/ajax-counter/dat/count.dat'); // アクセス数
-define('LOG_FILE', DOCUMENT_ROOT . '/ajax-counter/dat/log.dat'); // ログ
-```
-
-### ファイルのアップロード
-`ajax-counter/` ディレクトリをWebサーバ上の任意の場所にアップロードします．
-
-### パーミッションの変更
-`dat/` ディレクトリと，それ以下のファイルに書き込み権限を付与します．
-```
-- dat/           # 707 or 777
-  - count.dat    # 606 or 666
-  - log.dat      # 606 or 666
-```
-
-### Webページにコードの追加
-アクセス数をカウントしたいページの，アクセス数を表示したい部分に以下のコードを追加します．  
-`counter.js` のパスは適切なものを適宜指定して下さい．
+###### Load plugin
 ```html
-<script src="/ajax-counter/counter.js"></script>
-<div class="counter"></div>
+<script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+<script src="jquery.ajax-counter.js"></script>
 ```
 
-### 動作テスト
-コードを追加したページにアクセスし，以下のように表示されているか確認して下さい．
-```
-累計 1 今日 1 昨日 0
-```
-ページをリロードして，アクセス数がカウントアップしていれば正しく動作しています．
-
-### 注意
-もし `counter` というクラス名を既にCSSなど別の場所で使用している場合は，本スクリプトの `counter` クラスとバッティングしてしまいます．  
-その場合は以下の部分を書き換えて下さい．
-
-`counter.js` の8行目の `.counter` を別のクラス名に変更する．
+###### JavaScript
 ```javascript
-jQuery(".ajax-counter").append('累計&ensp;'+res.total+'&ensp;今日&ensp;'+res.today+'&ensp;昨日&ensp;'+res.yesterday);
+$(function () {
+  $("#counter").ajaxCounter("jquery.ajax-counter.php");
+});
 ```
 
-Webページに追加するコードの `.counter` も↑で変更したのと同じクラスに変更する．
+###### HTML
 ```html
-<script src="/ajax-counter/counter.js"></script>
-<div class="ajax-counter"></div>
+<div id="counter">Total: <span class="count-total"></span></div>
 ```
 
+## Options
+- **`dat_dir`**  
+  Path to "dat" directory that contains "count.dat" and "log.dat".  
+  In relative path, the place with "jquery.ajax-counter.php" is the current directory.  
+  (datフォルダへのパス。相対パスの場合は、PHPファイルを基準とする)
+    - default: `dat/`
+- **`total`**  
+  CSS selectors for an element that displays total count.  
+  (総計を表示する要素のセレクタ)
+    - default: `.count-total`
+- **`today`**  
+  CSS selectors for an element that displays today's count.  
+  (今日の訪問者数を表示する要素のセレクタ)
+    - default: `.count-today`
+- **`yesterday`**  
+  CSS selectors for an element that displays yesterday's count.  
+  (昨日の訪問者数を表示する要素のセレクタ)
+    - default: `.count-yesterday`
 
-## 本スクリプトの使用に関して
-本スクリプトは自由にお使いいただけます．改造も自由です．  
-ただし，本スクリプトの利用によりいかなる不利益が生じても，作者は一切責任を負わないものとします．
-
-## 技術的なこと
-
-### 仕組み
-ざっくり説明すると，以下のように動作しています．
-
-1. ページにアクセスされると， `counter.js` が呼び出されます．
-2. `counter.js` は Ajax により `counter.php` を呼び出します．
-3. `counter.php` はアクセス数のカウント処理を行い，アクセス数（累計・今日・昨日）を json 形式で出力します．
-4. `counter.js` は json を受け取り，アクセス数を `<div class="counter"></div>` 内に表示します．
-
-なお，ブラウザなどで直接 `counter.php` にアクセスしてもエラーとなります．  
-`counter.php` は Ajax による呼び出し以外に対してはエラーを吐く仕様となっています．
-
-### アクセス数の表示フォーマット
-`counter.js` の8行目の `append()` 内を書き換えることで，自由に変更することができます．
+###### Example
 ```javascript
-jQuery(".ajax-counter").append('累計&ensp;'+res.total+'&ensp;今日&ensp;'+res.today+'&ensp;昨日&ensp;'+res.yesterday);
+$(function () {
+  $("#counter").ajaxCounter(
+    "jquery.ajax-counter.php",
+    {
+      dat_dir: "ajax-counter-dat/",
+      total: ".total-area",
+      today: ".today-area",
+      yesterday: ".yesterday-area"
+    }
+  );
+});
 ```
 
-### ログファイルについて
+## Author
+宮崎 雄策 (Yuusaku Miyazaki) <toumin.m7@gmail.com>
 
-#### count.dat
-カンマ区切りで次のデータが格納されています．
-```
-今日の日付,累計,今日,昨日
-```
-
-#### log.dat
-1行に1日分のアクセス数が，以下のように保存されています．
-```
-日付,日計アクセス数
-```
-下に行くほど新しい日付のアクセス数です．
-
-## 変更履歴
-
-### Ver 1.0.0
-初版公開．
-
-### Ver 1.0.1
-Ajax の呼び出しをキャッシュしないよう修正．
+## License
+[MIT License](//www.opensource.org/licenses/mit-license.php)
