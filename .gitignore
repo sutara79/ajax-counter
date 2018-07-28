@@ -1,2 +1,2 @@
-count.dat
-log.dat
+dist/dat/*
+!.gitkeep

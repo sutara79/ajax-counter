@@ -8,7 +8,7 @@ jQuery plugin for generating a simple hit-counter using jQuery + PHP.
 - Ajax を利用しているので、ページがキャッシュされていてもちゃんとカウントしてくれます。
 
 ## Forked from
-- [shun91/ajax-counter](//github.com/shun91/ajax-counter)
+- [shun91/ajax-counter](https://github.com/shun91/ajax-counter)
 
 上記のプロジェクトをフォークし、独自に編集しました。  
 変更点は下記のとおりです。
@@ -19,31 +19,27 @@ jQuery plugin for generating a simple hit-counter using jQuery + PHP.
 - PHPの処理をクラス化した。
 
 ## Demo
-http://usamimi.info/~sutara/sample2/ajax-counter/
+https://sutara79-php.herokuapp.com/demo/jquery.ajax-counter/
 
 ## Usage
-###### Set file permission
-- `dat/` (707 or 777)
-    - `count.dat` (606 or 666)
-    - `log.dat` (606 or 666)
+###### File permission
+- `dat/`: 707 or 777
+    - `count.dat`: 606 or 666
+    - `log.dat`: 606 or 666
 
-###### Load plugin
+###### HTML
 ```html
-<script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+<div id="counter">Total: <span class="count-total"></span></div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="jquery.ajax-counter.js"></script>
 ```
 
 ###### JavaScript
 ```javascript
-$(function () {
-  $("#counter").ajaxCounter("jquery.ajax-counter.php");
-});
+$("#counter").ajaxCounter("jquery.ajax-counter.php");
 ```
 
-###### HTML
-```html
-<div id="counter">Total: <span class="count-total"></span></div>
-```
 
 ## Options
 - **`dat_dir`**  
@@ -66,21 +62,19 @@ $(function () {
 
 ###### Example
 ```javascript
-$(function () {
-  $("#counter").ajaxCounter(
-    "jquery.ajax-counter.php",
-    {
-      dat_dir: "ajax-counter-dat/",
-      total: ".total-area",
-      today: ".today-area",
-      yesterday: ".yesterday-area"
-    }
-  );
-});
+$("#counter").ajaxCounter(
+  "jquery.ajax-counter.php",
+  {
+    dat_dir: "ajax-counter-dat/",
+    total: ".total-area",
+    today: ".today-area",
+    yesterday: ".yesterday-area"
+  }
+);
 ```
-
-## Author
-宮崎 雄策 (Yuusaku Miyazaki) <toumin.m7@gmail.com>
 
 ## License
 [MIT License](//www.opensource.org/licenses/mit-license.php)
+
+## Author
+宮崎 雄策 (Yuusaku Miyazaki) <toumin.m7@gmail.com>
